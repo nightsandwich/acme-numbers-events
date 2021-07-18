@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acme Numbers and Events</title>
+  </head>
+  <style>
+    body {
+      font-family: verdana;
+      text-align: center;
+    }
+    h1 {
+      font-family: Verdana;
+      background-color: rgb(248, 192, 9);
+      color: rgb(6, 25, 49);
+    }
+    ul {
+      list-style: none;
+    }
+
+    li.add-border {
+      border: 2px dotted dodgerblue;
+    }
+    h6 {
+      padding: 0;
+    }
+
+  </style>
+  <body>
+    <h1>Acme Numbers and Events</h1>
+    <h4>Click the + to add a random number and compute the average</h4>
+    <h5>Click the number below to remove it from the list of numbers and compute the new average</h5>
+    <div>
+      <button type="button">+</button>
+      <div id="result"></div>
+      <h6></h6>
+      <ul>
+        <!---results go here as LIs--->
+      </ul>
+    </div>
+  </body>
+
+  <script>
+    const button = document.querySelector("button");
+    const result = document.getElementById("result");
+    const ul = document.querySelector("ul");
+    const h6 = document.querySelector("h6");
+
+    const results = [];
+
+    button.addEventListener("click", function () {
+      const num = Math.floor(Math.random() * 100);
+
+      const li = document.createElement("li");
+
+      results.push(num);
+      let avg = results.reduce((accum, curr) => accum + curr) / results.length;
+      avg = (Math.round(avg * 100) / 100).toFixed(2);
+
+      li.classList.add("add-border");
+
+      result.innerHTML = `The average of all the numbers is ${avg}!`;
+
+      h6.innerHTML = `Random Numbers:`
+
+      li.innerText = num;
+      ul.appendChild(li);
+
+
+      li.addEventListener("click", function (event) {
+        if (event.target.tagName === "LI") {
+          event.target.parentNode.removeChild(event.target);
+        }
+
+        const targetNum = event.target;
+        const resultsIndex = results.indexOf(Number(targetNum.innerText));
+    
+        results.splice(resultsIndex, 1);
+     
+        avg = results.reduce((accum, curr) => accum + curr) / results.length;        
+        avg = (Math.round(avg * 100) / 100).toFixed(2);
+
+        result.innerText = `The average of all the numbers is ${avg}!`;
+      });
+    });
+  </script>
+</html>
+
